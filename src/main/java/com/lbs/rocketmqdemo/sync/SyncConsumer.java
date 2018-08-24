@@ -22,7 +22,7 @@ public class SyncConsumer {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("sync_group");
         consumer.setNamesrvAddr("192.168.52.201:9876");
         consumer.setInstanceName("sync_consumer");
-        //订阅
+        //订阅 topic tag
         consumer.subscribe("sync_topic", "sync_tag");
         //监听
         consumer.registerMessageListener(new MessageListenerConcurrently() {

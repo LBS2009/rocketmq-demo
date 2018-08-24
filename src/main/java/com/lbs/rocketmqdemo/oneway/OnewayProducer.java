@@ -1,5 +1,6 @@
 package com.lbs.rocketmqdemo.oneway;
 
+import com.lbs.rocketmqdemo.util.TimeUtil;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
@@ -22,7 +23,7 @@ public class OnewayProducer {
         producer.start();
         for (int i = 0; i < count; i++) {
             //Create a message instance, specifying topic, tag and message body.
-            Message msg = new Message("oneway_topic", "oneway_tag", ("oneway message " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+            Message msg = new Message("oneway_topic", "oneway_tag", ("oneway message " + TimeUtil.getTime() + " " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             //Call send message to deliver message to one of brokers.
             producer.sendOneway(msg);
 

@@ -1,13 +1,11 @@
 package com.lbs.rocketmqdemo.async;
 
+import com.lbs.rocketmqdemo.util.TimeUtil;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * description: 异步传输 Provider
@@ -15,11 +13,9 @@ import java.util.Date;
  * @author libosheng
  * @date 2018-8-22
  */
-public class AsyncProvider {
+public class AsyncProducer {
 
     public static void main(String[] args) throws Exception {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm:SS");
-        String time = format.format(new Date());
         int count = 100;
         //创建生产者
         DefaultMQProducer producer = new DefaultMQProducer("async_group");
@@ -32,7 +28,7 @@ public class AsyncProvider {
         for (int i = 0; i < count; i++) {
             final int index = i;
             //创建消息
-            Message msg = new Message("async_topic", "async_tag", "async_id_001", ("async message " + time + " " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
+            Message msg = new Message("async_topic", "async_tag", "async_id_001", ("async message " + TimeUtil.getTime() + " " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
             producer.send(msg, new SendCallback() {
                 @Override
                 public void onSuccess(SendResult sendResult) {
@@ -45,5 +41,9 @@ public class AsyncProvider {
                 }
             });
         }
+        //线程阻塞等待异步消息完成
+        Thread.sleep(3000);
+        //立即关闭会报错 MQClientException: No route info of this topic, async_topic
+        producer.shutdown();
     }
 }
