@@ -12,6 +12,11 @@ import java.util.Date;
 public class TimeUtil {
 
     /**
+     * 次数 100
+     */
+    public static final Integer TIME_100 = 100;
+
+    /**
      * 日期格式 HH:mm:SS
      */
     private static SimpleDateFormat format = new SimpleDateFormat("HH:mm:SS");
